@@ -1,10 +1,13 @@
+// import EventSourcing from './EventSourcing';
+import WebSock from './WebSock';
 import './app.css';
-import LongPulling from './LongPulling';
 
 const App = () => {
   return (
     <div>
-      <LongPulling />
+      {/* <LongPulling /> */}
+      {/* <EventSourcing /> */}
+      <WebSock />
     </div>
   );
 };

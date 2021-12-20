@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const LongPulling = () => {
+const EventSourcing = () => {
   const [messages, setMessages] = useState([]);
   const [value, setValue] = useState('');
 
@@ -10,15 +10,11 @@ const LongPulling = () => {
   }, []);
 
   const subscribe = async () => {
-    try {
-      const { data } = await axios.get('http://localhost:5000/get-messages');
-      setMessages((prev) => [data, ...prev]);
-      await subscribe();
-    } catch {
-      setTimeout(() => {
-        subscribe();
-      }, 500);
-    }
+    const eventSource = new EventSource('http://localhost:5000/connect');
+    eventSource.onmessage = function (event) {
+      const message = JSON.parse(event.data);
+      setMessages((prev) => [message, ...prev]);
+    };
   };
 
   const sendMessages = async () => {
@@ -51,4 +47,4 @@ const LongPulling = () => {
   );
 };
 
-export default LongPulling;
+export default EventSourcing;
